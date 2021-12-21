@@ -1,0 +1,88 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#confirm-screen {
+  background: #000;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  top: 0;
+  opacity: 0;
+  position: absolute;
+  display: none;
+}
+
+#confirm-screen h2 {
+  padding-top: 30%;
+}
+
+#confirm-screen.pic-bg {
+  background: url('bg.webp');
+  background-size: cover;
+  opacity: 0;
+}
+
+#confirm-screen.pic-bg p {
+    color: #fff;
+    background-color: #F0438E;
+    text-transform: uppercase;
+    line-height: 100%;
+    padding: 3px 10px;
+    font-family: sans-serif;
+    font-weight: 700;
+    display: inline;
+    font-size: 20px;
+}
+
+.item {
+  border-radius: 5px;
+  clear: both;
+  background: #F0438E;
+  padding: 20px;
+  margin: 20px auto 20px auto;
+  text-align: left;
+  max-width: 550px;
+  color: white;
+  text-transform: uppercase;
+  font-size: 52%;
+}
+
+.intro-text {
+  background: #F0438E;
+  color: white;
+  width: 80%;
+  margin: 0 auto;
+  line-height: 120%;
+}
+
+.myButton {
+  box-shadow: inset 0px 1px 0px 0px #cf866c;
+  background-color: #F0438E;
+  border-radius: 3px;
+  border: 1px solid #942911;
+  display: inline-block;
+  cursor: pointer;
+  color: #360036;
+  font-size: 32px;
+  padding: 18px 36px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #854629;
+  margin-top: 1em;
+}
+
+body {
+  background: url('bg.webp');
+  background-size: 100% auto;
+  /* background-repeat: no-repeat; */
+}
+
+/* .myButton:hover {
+        background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+        background-color:#bc3315;
+      } */
+.myButton:active {
+  position: relative;
+  top: 1px;
+}

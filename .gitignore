@@ -1,0 +1,5 @@
+config.txt
+__pycache__
+bin
+lib
+client_secret.json

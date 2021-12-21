@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>buzz >> Google Sheets</title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="assets/utils.js"></script>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+
+<audio id="audio" src="assets/beep-07.wav"></audio>
+
+<div class="center">
+    <button id="play" class="select-button" onclick="playAndSend();"> Play</button>
+  </div>
+    <script>
+    let urlParams;
+   const sound = "./assets/beep-07.wav";
+   const backend = "http://localhost:8000/answer/42"
+
+   window.addEventListener('DOMContentLoaded', (event) => {
+      urlParams = new URLSearchParams(window.location.search);
+
+      // if(!urlParams.get('name')){
+      //   console.error('name not sent!')
+      //   document.getElementById("play").disabled = true
+      // }
+   })
+
+    function playAndSend() {
+          var sound = document.getElementById("audio");
+          sound.play();
+          sendData()
+
+          $('#confirm-screen').show();
+      }
+      
+      function sendData() {
+        postData(`${API_URL}buzz/?name=${urlParams.get('name')}`, { answer: 42 })
+          .then(data => {
+            console.log(data);
+          
+          });
+      }
+    </script>
+
+
+<div id="confirm-screen" class="pic-bg">
+  <h2>Your answer was submitted!</h2>
+</div>
+
+
+    <style>
+      body {
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      font-size: 2em;
+      line-height: 80%;
+      }
+      body .center {
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      margin-left: -100px;
+      margin-top: -100px;
+      }
+      body .center .select-button {
+      width: 200px;
+      padding: 1em -9em 1em 1em;font-size: 2em;
+      outline: none;
+      height: 180px;
+      line-height: 200px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 50%;
+      background: #f74d4d;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f74d4d), color-stop(100%,
+      #f86569));
+      background-image: -moz-gradient(linear, left top, left bottom, color-stop(0%, #f74d4d), color-stop(100%,
+      #f86569));
+      box-shadow: 0 15px #e24f4f;
+      }
+      body .center .select-button:active {
+      box-shadow: 0 0 #e24f4f;
+      -webkit-transform: translate(0px, 15px);
+      -moz-transform: translate(0px, 15px);
+      -ms-transform: translate(0px, 15px);
+      -o-transform: translate(0px, 15px);
+      -webkit-transition: 0.1s all ease-out;
+      -moz-transition: 0.1s all ease-out;
+      -ms-transition: 0.1s all ease-out;
+      -o-transition: 0.1s all ease-out;
+      transition: 0.1s all ease-out;
+      }
+    </style>
+    </body>
+    </html>

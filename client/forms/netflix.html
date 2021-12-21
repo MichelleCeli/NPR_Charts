@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Netflops Pitch | Logic Locks</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="assets/style.css">
+
+  <style>
+    body {
+      background: #000;
+      color: red;
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      font-size: 2em;
+      line-height: 80%;
+    }
+
+    h1 {
+      font-size: 3em;
+    }
+
+    p {
+      width: 50%;
+      margin: 0 auto;
+      line-height: 150%;
+      font-family: sans-serif;
+      text-transform: uppercase;
+      font-size: 0.7em;
+      font-weight: 700;
+    }
+
+    #sortable {
+      list-style-type: none;
+      margin: 0 auto;
+      padding: 0;
+      width: 50%;
+    }
+
+    #sortable li {
+      margin: 0 3px 3px 3px;
+      padding: 0.4em;
+      padding-left: .5em;
+      font-size: 1.2em;
+      height: 26px;
+      font-family: sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5em;
+      cursor: grabbing;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 5px;
+      color: red;
+    }
+
+    svg {
+      width: .4em;
+      height: .4em;
+      fill: #fff;
+    }
+
+    #sortable li span {
+      position: absolute;
+      margin-left: -1.3em;
+    }
+
+    button {
+      padding: 1em 3em;
+      font-size: 1em;
+      margin-top: 3em;
+      background: red;
+      border: none;
+      font-family: 'Roboto Slab', serif;
+    }
+
+    .myButton {
+      box-shadow: inset 0px 1px 0px 0px #cf866c;
+      background-color: red;
+      border-radius: 3px;
+      border: 1px solid #942911;
+      display: inline-block;
+      cursor: pointer;
+      color: black;
+      font-size: 26px;
+      padding: 12px 24px;
+      text-decoration: none;
+      text-shadow: 0px 1px 0px #854629;
+    }
+
+    /* .myButton:hover {
+      background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+      background-color:#bc3315;
+      } */
+    .myButton:active {
+      position: relative;
+      top: 1px;
+    }
+
+    input {
+      font-size: 1.5em;
+      margin-top: .5em;
+    }
+
+    .icon-container {
+      width: 1em;
+      margin: -18px 2%;
+      float: left;
+    }
+
+    #confirm-screen h2 {
+      padding-top: 0;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="assets/utils.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+
+  <script>
+    let list = [];
+
+    const drawUI = function (list) {
+      $('#sortable').html('')
+
+
+      $.each(list, function (index, value) {
+        $('#sortable').append(`
+              <li class="ui-state-default" id="${value}">
+                <p style="width: 80%;
+                    display: inline-block;
+                    text-overflow: ellipsis;
+                    padding: 0;
+                    margin: 0;
+                    text-align: left;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    margin-top: -7px;"> ${value}</p>
+
+                  <div class="icon-container">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="451.847px" height="451.846px" viewBox="0 0 451.847 451.846" style="enable-background:new 0 0 451.847 451.846;"
+                xml:space="preserve">
+              <g>
+                <path d="M248.292,106.406l194.281,194.29c12.365,12.359,12.365,32.391,0,44.744c-12.354,12.354-32.391,12.354-44.744,0
+                  L225.923,173.529L54.018,345.44c-12.36,12.354-32.395,12.354-44.748,0c-12.359-12.354-12.359-32.391,0-44.75L203.554,106.4
+                  c6.18-6.174,14.271-9.259,22.369-9.259C234.018,97.141,242.115,100.232,248.292,106.406z"/>
+              </g>
+              </svg>
+
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="451.847px" height="451.847px" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 451.847 451.847;"
+                xml:space="preserve">
+              <g>
+                <path d="M225.923,354.706c-8.098,0-16.195-3.092-22.369-9.263L9.27,151.157c-12.359-12.359-12.359-32.397,0-44.751
+                  c12.354-12.354,32.388-12.354,44.748,0l171.905,171.915l171.906-171.909c12.359-12.354,32.391-12.354,44.744,0
+                  c12.365,12.354,12.365,32.392,0,44.751L248.292,345.449C242.115,351.621,234.018,354.706,225.923,354.706z"/>
+              </g>
+              </svg>
+          </div>
+
+              </li>`);
+      });
+
+      $("#sortable").sortable();
+      $("#sortable").disableSelection();
+
+      //enable button
+      $('#send').prop('disabled', false);
+
+      $('#send').click(function () {
+
+        let data = {
+          team: '', //$('#teamname').val(),
+          order: $("#sortable").sortable("toArray")
+        }
+
+        // if($('#teamname').val() === ''){
+        //   alert('fill in team name!')
+        //   return
+        // }
+
+        $('#confirm-screen').css({
+          'display': 'flex'
+        }).animate({
+          opacity: 1,
+        });
+        $('main').remove();
+
+        postData(`${API_URL}answer/netflix`, data)
+          .then(result => {
+            console.log(result);
+          
+          });
+      });
+
+    }
+
+    $(function () {
+      getData(`${API_URL}questions/movies `).then(result => {
+        list = result.items.map(i => i[0])
+        drawUI(list);
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <main>
+    <h1> Netflops Pitch</h1>
+    <br><br>
+    <br><br>
+    <p>Which pitch was the best? Which pitch was the worst? You decide!
+      <br><br>
+      Click and drag to rank the pitches from the best to the worst.</p>
+    <form>
+      <!-- Who is in your team? <br>
+    <input type="text" required id="teamname"/> -->
+      <br>
+      <br>
+      <br>
+      <ul id="sortable">
+        loading ...
+      </ul>
+      <button id="send" type="button" class="myButton" disabled>SUBMIT</button>
+
+    </form>
+  </main>
+  <div id="confirm-screen" style="display: none;align-items: center;justify-content: center;">
+    <h2>Your ranking has been submitted!</h2>
+  </div>
+
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Have you ever? | Logic Locks</title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="assets/utils.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+            body {
+              font-family: 'Roboto Slab', serif;
+              text-align: center;
+              font-size: 2em;
+              line-height: 80%;
+            }
+
+            .intro-text {
+              font-family: sans-serif;
+              font-weight: 700;
+              text-transform: uppercase;
+              background-clip: revert;
+              display: inline;
+              font-size: 0.85em;
+              padding: 0 10px;
+              line-height: 100%;
+            }
+            .btn-group {
+              width: 100%;
+            }
+            label.btn.btn-primary {
+              width: 45%;
+            }
+            .item .btn.btn-primary {
+              font-size: 2em;
+            }
+            .item h3 {
+              margin-top: 0;
+              font-size: 3.2em;
+              text-transform: none;
+            }
+            h1 {
+              font-size: 4em;
+              color: white;
+            }
+            .myButton {
+              color: #fff;
+            }
+
+    </style>
+  </head>
+  <body>
+
+    <script>
+      let list = [];
+
+      const drawUI = function(list){
+        
+        $('#sortable').html('');
+        
+        $.each(list, function(index,value) {
+            $('#sortable').append(`<div class="item" data-id="${value}">
+              <h3>${value}</h3>
+
+              <div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" style="margin-right: 10%;">
+    <input type="radio" name="q${index}" id="option2" value="yes"> Yes
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="q${index}" id="option3" value="no"> No
+  </label>
+</div>
+
+
+              </div>`);
+          });
+
+          //enable button
+          $('#send').prop('disabled', false);
+
+          $('#send').click(function(){
+            let data = {
+              answers: []
+            }
+
+            
+
+            $('#sortable .item').each(function(){
+              data.answers.push($(this).find('input:checked').val())
+              //[$(this).data('id')]:
+            })
+
+            //console.log(data.answers)
+
+            $('#confirm-screen').css({
+              'display': 'flex'
+            }).animate({
+                opacity: 1,
+              }, 500);
+              $('main').remove();
+              
+              console.log(data);
+
+              postData(`${API_URL}answer/haveyouever/`, data)
+                .then(result => {
+                  console.log(result);
+                  
+                });
+          })
+      }
+
+      $(function() {
+      getData(`${API_URL}questions/haveyouever/`).then(result => {
+        list = result.items.map(i => i[0])
+       drawUI(list);
+      });
+    });
+
+          </script>
+<main>
+          <h1>have you ever</h1>
+          <br><br>
+          <div style="width: 60%;margin: 0 auto; font-size: 140%;line-height: 100%;">
+          <p class="intro-text"> Have you ever done any of the things mentioned below? Please answer the questions truthfully - don't worry all your answers are anonymous.<br><br> Once everybody has given their answers you'll see if you are the only one or not... </p>
+          </div>
+
+          <br><br><br><br>
+          <form name="questions">
+  <div id="sortable">
+    loading...
+<!-- 
+<div class="item">
+  <h3>Have yopu ever?</h3>
+<div class="btn-group" data-toggle="buttons" id="11">
+  <label class="btn btn-primary">
+    <input type="radio" name="q11" id="option2" value="yes"> Yes
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="q11" id="option3" value="no"> No
+  </label>
+</div>
+<div class="item">
+  <h3>Have yopu ever?</h3>
+<div class="btn-group" data-toggle="buttons" id="22">
+  <label class="btn btn-primary">
+    <input type="radio" name="q22" id="option2" value="yes"> Yes
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="q22" id="option3" value="no"> No
+  </label>
+</div>
+
+</div> -->
+  </div>
+  
+  <button id="send"  class="myButton" type="button" disabled>Send</button>
+  <br>
+  <br><br>
+</form>
+</main>
+<div id="confirm-screen" class="pic-bg" style="display: none;align-items: center;justify-content: center;"><div><p style="line-height: 140%;font-size: 1.4em;">Please return to the Zoom meeting. <br><br>Once everybody has submitted their answers the show will go on.</p></div>
+</div>
+
+
+  </body>
+</html>
+

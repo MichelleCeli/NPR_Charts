@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Whats that sound | Logic Locks</title>
+  <meta charset="utf-8" />
+
+  <script src="assets/utils.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.22.0/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.22.0/mediaelement-and-player.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.22.0/mediaelementplayer.min.css">
+
+  <link rel="stylesheet" href="assets/sound.css">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+
+  <style>
+    body {
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      font-size: 2em;
+      line-height: 80%;
+    }
+
+    button.myButton {
+      color: white;
+    }
+
+    textarea,
+    input {
+      font-size: 1.2em;
+      font-family: sans-serif;
+      margin-top: .5em;
+      border-radius: 5px;
+      border: 2px solid white;
+      margin-left: 10px;
+      padding: 2px;
+    }
+
+    input {
+      width: 80%;
+    }
+
+    textarea {
+      width: 90%;
+      height: 27px;
+    }
+
+    h3 {
+      margin-bottom: 5px;
+      margin-top: 0;
+    }
+
+    .intro-text {
+      font-family: sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      background-clip: revert;
+      display: inline;
+      font-size: 0.9em;
+      padding: 0 10px;
+      line-height: 0;
+    }
+
+    .mejs-controls .mejs-time-rail .mejs-time-total {
+      background: #FF9800;
+    }
+
+    .mejs-controls .mejs-time-rail .mejs-time-current {
+      background: #02a9f4;
+    }
+
+    .mejs-controls .mejs-button button {
+      background: #CDDC39;
+    }
+  </style>
+  <main>
+  <br><br>
+  <img src="assets/title.png" style="width: 80%;">
+  <br><br><br>
+  <img src="assets/subtitle.png" style="width: 50%;">
+  <br><br>
+
+  <div style="width: 50%; margin: 0 auto;">
+    <p class="intro-text"> You have limited time to submit one guess per sound, per team! <br>Make sure that only one
+      person from your team fills in your answers below.</p>
+  </div>
+  <br> <br>
+  <p class="intro-text" style="font-size: 130%;">GOOD LUCK! </p>
+
+  <br>
+  <br>
+  <form>
+    <div class="item" style="text-align: center;">
+      Who is in your team?<br>
+      <textarea required id="teamname"></textarea>
+    </div>
+
+    <br>
+    <br>
+    <section>
+
+    </section>
+
+    <button id="send" class="myButton" type="button" disabled>Send</button>
+    <br />
+    <br />
+    <br />
+  </form>
+
+</main>
+  <div id="confirm-screen" class="pic-bg" style="display: none;align-items: center;justify-content: center;">
+    <div>
+      <p style="font-size: 100%;">Thank you for your guesses.</p><br><br>
+      <p>Please return to the Zoom session. All will be revealed soon!</p>
+    </div>
+  </div>
+
+  <script>
+    let list = [1, 2, 3, 4, 5, 6].map(i => `sound${i}`)
+
+    $(document).ready(function () {
+
+
+      $.each(list, function (index, value) {
+        $('section').append(`
+            <div class="item">
+              <h3>Sound ${index+1}</h3>
+              <audio controls><source src="assets/sound${index+1}.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+               </audio>
+          
+         Answer: <input type="text" required id="sound${index+1}"/>
+         </div>`);
+      });
+
+      $('audio').mediaelementplayer({
+        features: ['playpause', 'progress', 'current', 'tracks', 'fullscreen']
+      });
+
+      const fields = ['teamname', 'sound1', '']
+
+
+      //enable button
+      $('#send').prop('disabled', false);
+
+      $('#send').click(function () {
+
+        for (let index = 1; index < 4; index++) {
+          if($(`#sound${index}`).val() === '') {
+            alert('Please fill in field # ' + index)
+            return;
+          }
+        }
+
+        let data = {
+          team: $('#teamname').val(),
+        }
+
+        for (let index = 1; index < 6; index++) {
+          data = {
+            ...data,
+            [`sound${index}`]: $(`#sound${index}`).val()
+          }
+        }
+
+
+        $('#confirm-screen').css({
+          'display': 'flex'
+        }).animate({
+          opacity: 1,
+        });
+        $(window).scrollTop(0);
+        $('form').remove();
+
+        postData(`${API_URL}answer/sounds`, data)
+            .then(data => {
+              console.log(data);
+            });
+      })
+    });
+  </script>
+
+
+</body>
+
+</html>
